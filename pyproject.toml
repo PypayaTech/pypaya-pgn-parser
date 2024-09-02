@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "pypaya-pgn-parser"
+version = "0.1.0"
+description = "A lightweight Python package that provides efficient parsing capabilities for Portable Game Notation (PGN) chess files"
+authors = ["PypayaTech"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/PypayaTech/pypaya-pgn-parser"
+keywords = ["chess", "pgn", "parser"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+typing-extensions = {version = "^4.0.0", python = "<3.8"}
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

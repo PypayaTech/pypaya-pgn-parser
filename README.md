@@ -25,49 +25,51 @@ Here's a quick example of how to use pypaya-pgn-parser:
 from io import StringIO
 from pypaya_pgn_parser.pgn_parser import PGNParser
 
-# Example PGN string
-pgn_string = '''[Event "Example Game"]
-[Site "Chess.com"]
-[Date "2023.09.15"]
-[Round "1"]
-[White "Player1"]
-[Black "Player2"]
-[Result "1-0"]
 
-1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 d6 8. c3 O-O 9. h3 Nb8 10. d4 Nbd7 1-0
+def process_pgn_file(file_path):
+    # Initialize the parser
+    parser = PGNParser()
 
-[Event "Example Game"]
-[Site "Chess.com"]
-[Date "2023.09.15"]
-'''
+    # Read the entire file into a StringIO object
+    with open(file_path, 'r') as file:
+        file_content = file.read()
+    pgn_stringio = StringIO(file_content)
 
-# Create a StringIO object from the PGN string
-pgn_stringio = StringIO(pgn_string)
+    game_count = 0
 
-# Initialize the parser
-parser = PGNParser()
+    while True:
+        # Parse the next game
+        result = parser.parse(pgn_stringio)
 
-# Parse the PGN
-first_game_info, first_game_moves = parser.parse(pgn_stringio)
+        # Check if we've reached the end of the file or encountered an error
+        if result is None:
+            print(f"Reached end of file or encountered an error after processing {game_count} games.")
+            break
 
-# Print the results for first game
-print("First game information:")
-for header, value in zip(["Event", "Site", "Date", "Round", "White", "Black", "Result"], first_game_info):
-    print(f"{header}: {value}")
+        game_info, game_moves = result
 
-print("\nFirst game moves:")
-print(first_game_moves)
+        # Process the game
+        process_game(game_count, game_info, game_moves)
+        game_count += 1
 
-# Parse the PGN
-second_game_info, second_game_moves = parser.parse(pgn_stringio)
+    print(f"Total games processed: {game_count}")
 
-# Print the results for second game
-print("Second game information:")
-for header, value in zip(["Event", "Site", "Date", "Round", "White", "Black", "Result"], second_game_info):
-    print(f"{header}: {value}")
 
-print("\nSecond game moves:")
-print(second_game_moves)
+def process_game(game_number, game_info, game_moves):
+    print(f"\nGame {game_number + 1} information:")
+    for header, value in zip(["Event", "Site", "Date", "Round", "White", "Black", "Result"], game_info):
+        print(f"{header}: {value}")
+
+    print("\nMoves:")
+    print(game_moves)
+
+    # You can add more processing here, such as analyzing the moves,
+    # storing the data, or any other operation you need to perform on each game
+
+
+# Usage
+file_path = "example.pgn"
+process_pgn_file(file_path)
 ```
 
 ## License

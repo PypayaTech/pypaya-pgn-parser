@@ -13,6 +13,8 @@ class TokenType(Enum):
 
 
 class Token:
+    __slots__ = ['type', 'value']
+
     def __init__(self, type: TokenType, value: str):
         self.type = type
         self.value = value
@@ -21,9 +23,7 @@ class Token:
         return f"Token({self.type}, '{self.value}')"
 
     def __eq__(self, other):
-        if isinstance(other, Token):
-            return self.type == other.type and self.value == other.value
-        return False
+        return isinstance(other, Token) and self.type == other.type and self.value == other.value
 
 
 class State(Enum):
@@ -109,6 +109,4 @@ class MovetextTokenizer:
 
     @staticmethod
     def _token_to_string(token: Union[str, Token]) -> str:
-        if isinstance(token, Token):
-            return token.value
-        return token
+        return token.value if isinstance(token, Token) else token
